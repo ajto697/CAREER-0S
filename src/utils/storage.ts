@@ -1,9 +1,24 @@
-import { UserProgress, Settings, HollandTrait, RadarTraits, WeeklyResult, SaveSlot, SaveSlotSummary } from '../types';
+import { UserProgress, Settings, HollandTrait, RadarTraits, WeeklyResult, SaveSlot, SaveSlotSummary, PixelAvatarConfig } from '../types';
 import { RAW_HOLLAND_QUESTIONS } from '../data/hollandQuestions';
 
 const STORAGE_KEY_PROGRESS = 'CAREEROS_V5_PROGRESS_DATA';
 const STORAGE_KEY_SETTINGS = 'CAREEROS_V5_SETTINGS_DATA';
 const STORAGE_KEY_SLOTS = 'CAREEROS_V5_ALL_SLOTS';
+
+export const DEFAULT_PIXEL_AVATAR: PixelAvatarConfig = {
+  gender: 'male',
+  skinTone: 'warm',
+  hairStyle: 'spiky',
+  hairColor: 'black',
+  outfit: 'cyber_hoodie',
+  outfitColor: 'green',
+  accessory: 'cyber_visor',
+  headgear: 'none',
+  heldItem: 'laptop',
+  companion: 'shiba',
+  title: 'Thực Tập Sinh Cyber',
+  expression: 'smile'
+};
 
 export const DEFAULT_RADAR: RadarTraits = {
   kiencuong: 20,
@@ -31,7 +46,8 @@ export const INITIAL_PROGRESS: UserProgress = {
   badges: ['Người Khởi Đầu'],
   reflectionPoints: 0,
   traitHistory: [{ date: new Date().toLocaleDateString('vi-VN'), source: 'Khởi tạo tài khoản', traitsAdded: {} }],
-  zodiacSign: 'Xử Nữ'
+  zodiacSign: 'Xử Nữ',
+  customAvatar: { ...DEFAULT_PIXEL_AVATAR }
 };
 
 export const INITIAL_SETTINGS: Settings = {
@@ -46,7 +62,11 @@ export function loadUserProgress(): UserProgress {
     const raw = localStorage.getItem(STORAGE_KEY_PROGRESS);
     if (raw) {
       const parsed = JSON.parse(raw);
-      return { ...INITIAL_PROGRESS, ...parsed };
+      return { 
+        ...INITIAL_PROGRESS, 
+        ...parsed,
+        customAvatar: parsed.customAvatar ? { ...DEFAULT_PIXEL_AVATAR, ...parsed.customAvatar } : { ...DEFAULT_PIXEL_AVATAR }
+      };
     }
   } catch (e) {
     console.warn('Failed to load storage', e);

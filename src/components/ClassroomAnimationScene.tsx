@@ -1,6 +1,7 @@
 import React from 'react';
 import { TeacherState } from '../types';
 import { Sparkles, Heart, Shield, Users, AlertTriangle, GraduationCap, UserCheck, Award, MessageSquare } from 'lucide-react';
+import { PixelCharacterSprite, PixelShibaSprite } from './pixel/PixelArtSprites';
 
 interface Props {
   week: number;
@@ -84,7 +85,7 @@ export const ClassroomAnimationScene: React.FC<Props> = ({
             : 'Mỗi em hãy khám phá nhóm sở thích Holland phù hợp với ước mơ của mình!',
           mentorDialogue: 'Cô Lan: "Hoạt động trải nghiệm rất sinh động và cuốn hút toàn bộ học sinh!"',
           ducStatus: 'Hào hứng tham gia trắc nghiệm nghề nghiệp',
-          minhStatus: minhLeaderAssigned ? '🌟 Tự tin làm Nhóm trưởng dẫn dắt cả trạm' : 'Tích cực trao đổi cùng các bạn',
+          minhStatus: minhLeaderAssigned ? 'Tự tin làm Nhóm trưởng dẫn dắt cả trạm' : 'Tích cực trao đổi cùng các bạn',
           hoaStatus: 'Hào hứng khám phá nhóm Quản lý',
           bgColor: 'from-[#061a1a] to-[#0d0d0d]'
         };
@@ -116,112 +117,139 @@ export const ClassroomAnimationScene: React.FC<Props> = ({
   const scene = getSceneConfig();
 
   return (
-    <div className={`bg-gradient-to-b ${scene.bgColor} border-2 border-[#00ff41] p-4 space-y-4 shadow-2xl font-mono text-[#00ff41]`}>
+    <div className={`bg-gradient-to-b ${scene.bgColor} border-2 border-[#00ff41] p-4 space-y-4 shadow-[0_0_25px_rgba(0,255,65,0.2)] font-mono text-[#00ff41] pixelated`}>
       {/* Scene Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#00ff41]/40 pb-2 gap-2">
         <div className="flex items-center gap-2">
           <GraduationCap className="w-5 h-5 text-[#ff00ff] shrink-0" />
-          <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#00ff41]">
+          <h3 className="text-xs sm:text-sm font-pixel font-bold uppercase tracking-wider text-[#00ff41]">
             {scene.title}
           </h3>
         </div>
         <div className="flex items-center gap-2 text-[11px] shrink-0">
-          <span className="bg-[#111] text-[#ff00ff] border border-[#ff00ff] px-2 py-0.5 font-bold">
-            THPT NGUYỄN TRÃI
+          <span className="bg-[#111] text-[#ff00ff] border border-[#ff00ff] px-2 py-0.5 font-bold font-pixel text-[9px]">
+            THPT NGUYỄN TRÃI 10A3
           </span>
           {isEvaluating && (
-            <span className="bg-[#00ff41] text-[#000] px-2 py-0.5 font-bold animate-pulse">
+            <span className="bg-[#00ff41] text-[#000] px-2 py-0.5 font-bold animate-pulse font-pixel text-[9px]">
               ĐANG ĐÁNH GIÁ...
             </span>
           )}
         </div>
       </div>
 
-      {/* Classroom Chalkboard Representation */}
-      <div className="bg-[#041207] border-2 border-[#00ff41]/80 p-4 rounded shadow-inner space-y-2 relative overflow-hidden">
-        <div className="text-center font-bold text-xs sm:text-sm text-[#00ff41] tracking-wider border-b border-[#00ff41]/30 pb-2 flex items-center justify-center gap-2">
+      {/* Classroom Chalkboard Representation with 8-Bit Pixel Characters */}
+      <div className="bg-[#041207] border-4 border-[#166534] p-4 shadow-inner space-y-3 relative overflow-hidden">
+        {/* Chalkboard Frame & Header */}
+        <div className="text-center font-bold text-xs sm:text-sm text-[#86efac] tracking-wider border-b border-[#166534] pb-2 flex items-center justify-center gap-2 font-pixel">
           <Sparkles className="w-4 h-4 text-[#ff00ff]" />
           <span>{scene.boardText}</span>
         </div>
 
-        {/* Teacher & Mentor Dialogue Cards */}
+        {/* Teacher & Mentor Animated Pixel Dialogue Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-          {/* Teacher Speech */}
-          <div className="bg-[#000]/80 border-l-4 border-[#00ff41] p-3 text-xs space-y-1">
-            <div className="flex items-center gap-1.5 text-[#00ff41] font-bold">
-              <UserCheck className="w-3.5 h-3.5 text-[#00ff41]" />
-              <span>BẠN (GIÁO VIÊN THỰC TẬP):</span>
+          {/* Teacher Speech with Pixel Avatar */}
+          <div className="bg-[#000]/90 border-2 border-[#00ff41] p-3 text-xs flex gap-3 items-start">
+            <PixelCharacterSprite type="teacher_lan" size={44} mood="proud" />
+            <div className="space-y-1 flex-1">
+              <div className="flex items-center gap-1.5 text-[#00ff41] font-pixel text-[10px] font-bold">
+                <span>BẠN (GIÁO VIÊN THỰC TẬP):</span>
+              </div>
+              <p className="text-white italic leading-relaxed text-xs">
+                "{scene.teacherDialogue}"
+              </p>
             </div>
-            <p className="text-white italic leading-relaxed">
-              "{scene.teacherDialogue}"
-            </p>
           </div>
 
-          {/* Mentor Speech */}
-          <div className="bg-[#000]/80 border-l-4 border-[#ff00ff] p-3 text-xs space-y-1">
-            <div className="flex items-center gap-1.5 text-[#ff00ff] font-bold">
-              <Award className="w-3.5 h-3.5 text-[#ff00ff]" />
-              <span>CÔ LAN (MENTOR HƯỚNG DẪN):</span>
+          {/* Mentor Speech with Pixel Avatar */}
+          <div className="bg-[#000]/90 border-2 border-[#ff00ff] p-3 text-xs flex gap-3 items-start">
+            {week === 4 ? (
+              <PixelCharacterSprite type="principal_hung" size={44} mood="proud" />
+            ) : (
+              <PixelCharacterSprite type="teacher_lan" size={44} mood="happy" />
+            )}
+            <div className="space-y-1 flex-1">
+              <div className="flex items-center gap-1.5 text-[#ff00ff] font-pixel text-[10px] font-bold">
+                <span>{week === 4 ? 'THẦY HÙNG (HIỆU TRƯỞNG):' : 'CÔ LAN (MENTOR HƯỚNG DẪN):'}</span>
+              </div>
+              <p className="text-white/90 italic leading-relaxed text-xs">
+                "{scene.mentorDialogue}"
+              </p>
             </div>
-            <p className="text-white/90 italic leading-relaxed">
-              "{scene.mentorDialogue}"
-            </p>
           </div>
         </div>
       </div>
 
-      {/* Student Desks Vector Avatars Grid */}
+      {/* Student Desks 8-Bit Pixel Character Grid */}
       <div className="space-y-2">
-        <div className="text-[11px] font-bold uppercase text-white flex items-center gap-1.5">
+        <div className="text-[11px] font-pixel font-bold uppercase text-white flex items-center gap-1.5">
           <Users className="w-4 h-4 text-[#ff00ff]" />
-          <span>TRẠNG THÁI LỚP HỌC & 3 HỌC SINH TRỌNG TÂM:</span>
+          <span>BÀN HỌC SINH & TRẠNG THÁI LỚP 10A3:</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* EM ĐỨC */}
-          <div className="bg-[#111] border border-[#ff4444]/60 p-3 space-y-2">
+          <div className="bg-[#111] border-2 border-[#ff4444]/70 p-3 space-y-2 hover:border-[#ff4444] transition-all">
             <div className="flex items-center justify-between border-b border-[#ff4444]/30 pb-1.5">
-              <span className="font-bold text-xs text-[#ff4444] flex items-center gap-1">
-                <AlertTriangle className="w-3.5 h-3.5" />
-                EM ĐỨC (CÁ BIỆT)
-              </span>
-              <span className="text-[10px] bg-[#000] px-1.5 py-0.5 text-white border border-[#ff4444]/40">
+              <div className="flex items-center gap-1.5">
+                <PixelCharacterSprite 
+                  type="student_duc" 
+                  size={36} 
+                  mood={teacherState.moraleDuc >= 55 ? 'happy' : 'angry'} 
+                />
+                <span className="font-pixel text-[10px] text-[#ff4444]">
+                  EM ĐỨC
+                </span>
+              </div>
+              <span className="text-[10px] bg-[#000] px-1.5 py-0.5 text-white border border-[#ff4444]/40 font-mono">
                 {teacherState.moraleDuc}% Tự giác
               </span>
             </div>
-            <p className="text-[11px] text-white/90 leading-tight">
+            <p className="text-[11px] text-white/90 leading-tight bg-black/60 p-1.5 border border-white/10">
               {scene.ducStatus}
             </p>
           </div>
 
           {/* EM MINH */}
-          <div className="bg-[#111] border border-[#ff00ff]/60 p-3 space-y-2">
-            <div className="flex items-center justify-between border-b border-[#ff00ff]/30 pb-1.5">
-              <span className="font-bold text-xs text-[#ff00ff] flex items-center gap-1">
-                <Heart className="w-3.5 h-3.5" />
-                EM MINH (TỰ TI)
-              </span>
-              <span className="text-[10px] bg-[#000] px-1.5 py-0.5 text-white border border-[#ff00ff]/40">
+          <div className="bg-[#111] border-2 border-[#00e5ff]/70 p-3 space-y-2 hover:border-[#00e5ff] transition-all">
+            <div className="flex items-center justify-between border-b border-[#00e5ff]/30 pb-1.5">
+              <div className="flex items-center gap-1.5">
+                <PixelCharacterSprite 
+                  type="student_minh" 
+                  size={36} 
+                  mood={teacherState.moraleMinh >= 55 ? 'happy' : 'thinking'} 
+                />
+                <span className="font-pixel text-[10px] text-[#00e5ff]">
+                  EM MINH
+                </span>
+              </div>
+              <span className="text-[10px] bg-[#000] px-1.5 py-0.5 text-white border border-[#00e5ff]/40 font-mono">
                 {teacherState.moraleMinh}% Tự tin
               </span>
             </div>
-            <p className="text-[11px] text-white/90 leading-tight">
+            <p className="text-[11px] text-white/90 leading-tight bg-black/60 p-1.5 border border-white/10">
               {scene.minhStatus}
             </p>
           </div>
 
           {/* EM HOA */}
-          <div className="bg-[#111] border border-yellow-400/60 p-3 space-y-2">
-            <div className="flex items-center justify-between border-b border-yellow-400/30 pb-1.5">
-              <span className="font-bold text-xs text-yellow-400 flex items-center gap-1">
-                <Shield className="w-3.5 h-3.5" />
-                EM HOA (ÁP LỰC)
-              </span>
-              <span className="text-[10px] bg-[#000] px-1.5 py-0.5 text-white border border-yellow-400/40">
+          <div className="bg-[#111] border-2 border-[#ffea00]/70 p-3 space-y-2 hover:border-[#ffea00] transition-all">
+            <div className="flex items-center justify-between border-b border-[#ffea00]/30 pb-1.5">
+              <div className="flex items-center gap-1.5">
+                <PixelCharacterSprite 
+                  type="student_hoa" 
+                  size={36} 
+                  mood={teacherState.moraleHoa >= 70 ? 'happy' : 'worried'} 
+                />
+                <span className="font-pixel text-[10px] text-[#ffea00]">
+                  EM HOA
+                </span>
+              </div>
+              <span className="text-[10px] bg-[#000] px-1.5 py-0.5 text-white border border-[#ffea00]/40 font-mono">
                 {teacherState.moraleHoa}% Tâm lý
               </span>
             </div>
-            <p className="text-[11px] text-white/90 leading-tight">
+            <p className="text-[11px] text-white/90 leading-tight bg-black/60 p-1.5 border border-white/10">
               {scene.hoaStatus}
             </p>
           </div>

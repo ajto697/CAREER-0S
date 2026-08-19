@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { UserProgress, Settings } from '../types';
 import { playSound } from '../utils/audio';
-import { Sparkles, X, ChevronRight, HelpCircle, Save, Award, Search, BookOpen, Cpu, Terminal, Users, ShieldCheck, Gamepad2, Volume2, Sliders, CheckCircle2 } from 'lucide-react';
+import { Sparkles, X, ChevronRight, HelpCircle, Save, Award, Search, BookOpen, Cpu, Terminal, Users, ShieldCheck, Gamepad2, Volume2, Sliders, CheckCircle2, Palette } from 'lucide-react';
+import { PixelShibaSprite } from './pixel/PixelArtSprites';
 
 interface Props {
   progress: UserProgress;
@@ -9,6 +10,7 @@ interface Props {
   onOpenSaveLoadModal?: () => void;
   onOpenDashboard?: () => void;
   onOpenMajorsModal?: () => void;
+  onOpenAvatarStudio?: () => void;
   onNavigateGate?: (gate: UserProgress['currentGate']) => void;
 }
 
@@ -18,6 +20,7 @@ export const DogMascotGuide: React.FC<Props> = ({
   onOpenSaveLoadModal,
   onOpenDashboard,
   onOpenMajorsModal,
+  onOpenAvatarStudio,
   onNavigateGate
 }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -167,6 +170,21 @@ export const DogMascotGuide: React.FC<Props> = ({
       ],
       actionLabel: 'Xem Chứng Chỉ (Nếu Tuần 8)',
       action: () => onNavigateGate?.('certificate')
+    },
+    {
+      id: 'avatar_studio',
+      category: 'utility',
+      title: '9. XƯỞNG TẠO NHÂN VẬT PIXEL (8-BIT AVATAR STUDIO)',
+      icon: Palette,
+      summary: 'Tùy biến tóc, da, trang phục, kính lúp, thú cưng đồng hành và danh hiệu 8-bit riêng!',
+      details: [
+        'Truy cập Xưởng Avatar bằng nút 8-BIT ở Navbar trên cùng hoặc nút chỉnh sửa trong phần Hồ Sơ.',
+        'Tùy chỉnh 6 tông da, 7 kiểu tóc, 8 màu nhuộm, 6 bộ trang phục và các phụ kiện công nghệ.',
+        'Chọn thú cưng 8-bit đồng hành (Shiba bot, Drone mini, Mèo pixel, Cú máy).',
+        'Hình ảnh nhân vật pixel sẽ tự động xuất hiện tại Bàn Làm Việc, Bản Đồ Thành Phố và Chứng Chỉ Tốt Nghiệp!'
+      ],
+      actionLabel: 'Mở Xưởng Avatar Studio',
+      action: () => onOpenAvatarStudio?.()
     }
   ];
 
@@ -181,10 +199,11 @@ export const DogMascotGuide: React.FC<Props> = ({
         
         {/* Dialogue Bubble */}
         {showBubble && (
-          <div className="bg-[#000] border-2 border-[#00ff41] p-3 max-w-xs shadow-[0_0_20px_rgba(0,255,65,0.3)] relative animate-fade-in text-xs text-[#00ff41] space-y-1">
+          <div className="bg-[#000] border-2 border-[#00ff41] p-3 max-w-xs shadow-[0_0_20px_rgba(0,255,65,0.3)] relative animate-fade-in text-xs text-[#00ff41] space-y-1 pixelated">
             <div className="flex items-center justify-between text-[10px] text-[#ff00ff] font-extrabold uppercase border-b border-[#00ff41]/30 pb-1">
-              <span className="flex items-center gap-1">
-                <span>🐕 SHIBA BOT (MASCOT)</span>
+              <span className="flex items-center gap-1.5 font-pixel text-[9px]">
+                <PixelShibaSprite size={18} mood="happy" accessory="cyber_visor" />
+                <span>SHIBA CYBER BOT</span>
               </span>
               <button
                 onClick={() => setShowBubble(false)}
@@ -200,10 +219,10 @@ export const DogMascotGuide: React.FC<Props> = ({
 
             <button
               onClick={() => { playSound.click(settings.retroSound); setIsOpenModal(true); }}
-              className="mt-1 w-full py-1 bg-[#00ff41] text-[#000] font-black text-[10px] uppercase hover:bg-[#00e53a] flex items-center justify-center gap-1"
+              className="mt-1 w-full py-1 bg-[#00ff41] text-[#000] font-black text-[10px] uppercase hover:bg-[#00e53a] flex items-center justify-center gap-1 font-pixel"
             >
               <HelpCircle className="w-3 h-3" />
-              <span>XEM HƯỚNG DẪN TẤT CẢ TÍNH NĂNG</span>
+              <span>XEM HƯỚNG DẪN TẤT CẢ</span>
             </button>
 
             {/* Bubble Tail */}
@@ -214,19 +233,19 @@ export const DogMascotGuide: React.FC<Props> = ({
         {/* Dog Avatar Trigger Button */}
         <button
           onClick={() => { playSound.click(settings.retroSound); setIsOpenModal(true); setShowBubble(true); }}
-          className={`group relative p-2 bg-[#0c0c0c] border-2 border-[#00ff41] text-[#00ff41] shadow-[0_0_25px_rgba(0,255,65,0.4)] hover:bg-[#00ff41] hover:text-[#000] transition-all transform hover:scale-110 active:scale-95 ${
+          className={`group relative p-2 bg-[#0c0c0c] border-2 border-[#00ff41] text-[#00ff41] shadow-[0_0_25px_rgba(0,255,65,0.4)] hover:bg-[#00ff41] hover:text-[#000] transition-all transform hover:scale-110 active:scale-95 pixelated ${
             barkTick % 2 === 0 ? '-translate-y-1' : 'translate-y-0'
           }`}
           title="Gọi Mascot Chó Hướng Dẫn"
         >
-          {/* Animated Dog SVG Icon */}
-          <div className="w-10 h-10 flex items-center justify-center text-2xl relative">
-            <span>🐕</span>
+          {/* Animated 8-Bit Pixel Dog Sprite */}
+          <div className="w-10 h-10 flex items-center justify-center relative">
+            <PixelShibaSprite size={36} mood="bark" accessory="cyber_visor" />
             {/* Animated Status Pulse Dot */}
             <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-[#ff00ff] rounded-full border border-[#000] animate-ping" />
           </div>
 
-          <span className="text-[9px] font-black uppercase block text-center mt-0.5 bg-[#00ff41] text-[#000] group-hover:bg-[#000] group-hover:text-[#00ff41] px-1 py-0.2">
+          <span className="text-[8px] font-pixel font-bold uppercase block text-center mt-0.5 bg-[#00ff41] text-[#000] group-hover:bg-[#000] group-hover:text-[#00ff41] px-1 py-0.2">
             HELP BOT
           </span>
         </button>
@@ -235,24 +254,24 @@ export const DogMascotGuide: React.FC<Props> = ({
       {/* FULL FEATURE GUIDE MODAL BY MASCOT DOG */}
       {isOpenModal && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 font-mono text-[#00ff41] select-none">
-          <div className="w-full max-w-4xl bg-[#080d08] border-4 border-[#00ff41] p-4 sm:p-6 space-y-5 shadow-[0_0_60px_rgba(0,255,65,0.3)] relative max-h-[92vh] overflow-y-auto">
+          <div className="w-full max-w-4xl bg-[#080d08] border-4 border-[#00ff41] p-4 sm:p-6 space-y-5 shadow-[0_0_60px_rgba(0,255,65,0.3)] relative max-h-[92vh] overflow-y-auto pixelated">
             
             {/* Header */}
             <div className="flex items-center justify-between border-b-2 border-[#00ff41] pb-3 gap-2">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-[#00ff41] text-[#000] font-black text-2xl flex items-center justify-center border-2 border-[#000] shrink-0">
-                  🐕
+                <div className="w-14 h-14 bg-[#000] border-2 border-[#00ff41] flex items-center justify-center shrink-0 shadow-[0_0_15px_#00ff41]">
+                  <PixelShibaSprite size={44} mood="triumph" accessory="grad_cap" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-base sm:text-lg font-black uppercase text-white tracking-wider">
+                    <h2 className="text-base sm:text-lg font-pixel font-bold uppercase text-white tracking-wider">
                       CẨM NANG HƯỚNG DẪN CAREEROS V5
                     </h2>
-                    <span className="bg-[#ff00ff] text-[#000] text-[10px] px-2 py-0.5 font-black uppercase">
-                      MASCOT SHIBA GUIDANCE
+                    <span className="bg-[#ff00ff] text-[#000] text-[9px] px-2 py-0.5 font-pixel font-bold uppercase">
+                      PIXEL SHIBA BOT
                     </span>
                   </div>
-                  <p className="text-xs text-[#00ff41]/80">
+                  <p className="text-xs text-[#00ff41]/80 mt-1">
                     "Gâu gâu! Dưới đây là hướng dẫn chi tiết cách dùng tất cả tính năng trong game!"
                   </p>
                 </div>
@@ -343,13 +362,15 @@ export const DogMascotGuide: React.FC<Props> = ({
 
             {/* Mascot Tip Footer */}
             <div className="bg-[#111] border-2 border-[#ff00ff] p-3 flex items-center gap-3 text-xs">
-              <span className="text-2xl shrink-0">🐶</span>
+              <div className="shrink-0 bg-black p-1 border border-[#ff00ff]">
+                <PixelShibaSprite size={32} mood="happy" accessory="headphones" />
+              </div>
               <div className="space-y-0.5">
-                <span className="text-[10px] font-black text-[#ff00ff] uppercase block">
+                <span className="text-[9px] font-pixel font-bold text-[#ff00ff] uppercase block">
                   MẸO TỪ SHIBA BOT:
                 </span>
                 <p className="text-white text-[11px] leading-relaxed">
-                  Cậu có thể gọi tớ bất cứ lúc nào bằng cách bấm biểu tượng Chó 🐕 ở góc phải dưới màn hình. Chúc cậu thực tập may mắn và đạt điểm cao!
+                  Cậu có thể gọi tớ bất cứ lúc nào bằng cách bấm biểu tượng Shiba Bot ở góc phải dưới màn hình. Chúc cậu thực tập may mắn và đạt điểm cao!
                 </p>
               </div>
             </div>

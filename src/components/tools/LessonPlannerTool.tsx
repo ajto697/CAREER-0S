@@ -35,6 +35,8 @@ interface Props {
   currentWeek?: number;
   teacherState?: TeacherState;
   onUpdateTeacherState?: (newState: TeacherState) => void;
+  equippedToolId?: string;
+  unlockedSkills?: string[];
 }
 
 const DEFAULT_STATE: TeacherState = {
@@ -54,9 +56,18 @@ export const LessonPlannerTool: React.FC<Props> = ({
   onEvaluateResult,
   currentWeek = 1,
   teacherState,
-  onUpdateTeacherState
+  onUpdateTeacherState,
+  equippedToolId,
+  unlockedSkills = []
 }) => {
   const [state, setState] = useState<TeacherState>(teacherState || DEFAULT_STATE);
+  const [activePedagogyHint, setActivePedagogyHint] = useState<string | null>(null);
+
+  // Skill unlocks
+  const hasSmartBoard = unlockedSkills.includes('smart_whiteboard_4k') || equippedToolId === 'smart_whiteboard_4k';
+  const hasClickers = unlockedSkills.includes('gamified_quiz_clickers') || equippedToolId === 'gamified_quiz_clickers';
+  const hasPsychology = unlockedSkills.includes('student_psychology_dossier') || equippedToolId === 'student_psychology_dossier';
+  const hasVRMetaverse = unlockedSkills.includes('vr_metaverse_classroom') || equippedToolId === 'vr_metaverse_classroom';
 
   useEffect(() => {
     if (teacherState) {
@@ -573,6 +584,55 @@ export const LessonPlannerTool: React.FC<Props> = ({
                 #{flag}
               </span>
             ))}
+          </div>
+        )}
+
+        {/* Special Pedagogical Tools HUD */}
+        {(hasSmartBoard || hasClickers || hasPsychology || hasVRMetaverse) && (
+          <div className="bg-[#0c180c] border-2 border-[#00ff41] p-3 space-y-2 text-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2 font-bold text-white uppercase text-[11px]">
+                <Tv className="w-4 h-4 text-[#00ff41]" />
+                <span>GIÁO CỤ SƯ PHẠM THÔNG MINH 4.0:</span>
+                <span className="text-[#ffea00] bg-black px-2 py-0.2 border border-[#ffea00]/60">
+                  {hasVRMetaverse ? '⚡ KÍNH VR GIÁO DỤC 3D' : hasPsychology ? '💡 SỔ TÂY TÂM LÝ AI' : '📺 SMARTBOARD 4K'}
+                </span>
+              </div>
+
+              <button
+                onClick={() => {
+                  playSound.click(settings.retroSound);
+                  confetti({ particleCount: 30, spread: 50 });
+                  if (hasVRMetaverse) {
+                    setActivePedagogyHint('🎓 [KÍNH VR METAVERSE 3D]: Kích hoạt bài giảng không gian số! Tinh thần lớp 10A3 bùng nổ, em Đức say mê tương tác mô hình và giải tỏa hoàn toàn áp lực.');
+                    updateAndSaveState(prev => ({
+                      ...prev,
+                      moraleDuc: Math.min(100, prev.moraleDuc + 15),
+                      moraleMinh: Math.min(100, prev.moraleMinh + 15),
+                      classAtmosphere: Math.min(100, prev.classAtmosphere + 10)
+                    }));
+                  } else if (hasPsychology) {
+                    setActivePedagogyHint('💡 [SỔ TÂY TÂM LÝ AI]: Em Minh cần lời động viên nhẹ nhàng trước lớp; Em Đức cần được giao trọng trách gắn liền thực tế; Em Hoa cần giải tỏa nỗi sợ điểm kém.');
+                  } else if (hasSmartBoard) {
+                    setActivePedagogyHint('📺 [BẢNG CẢM ỨNG 4K]: Đang kích hoạt sơ đồ tư duy tương tác màu sắc, thu hút 100% ánh nhìn học sinh.');
+                    updateAndSaveState(prev => ({
+                      ...prev,
+                      classAtmosphere: Math.min(100, prev.classAtmosphere + 5)
+                    }));
+                  }
+                }}
+                className="px-3 py-1 bg-[#00ff41] text-black font-black text-[10px] uppercase hover:bg-white transition-all flex items-center gap-1.5 cursor-pointer shadow-[0_0_10px_rgba(0,255,65,0.4)]"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>KÍCH HOẠT GIÁO CỤ ĐẶC BIỆT</span>
+              </button>
+            </div>
+
+            {activePedagogyHint && (
+              <div className="bg-black p-2 border border-[#00ff41]/60 text-[11px] text-[#00ff41] font-mono animate-fadeIn">
+                {activePedagogyHint}
+              </div>
+            )}
           </div>
         )}
       </div>

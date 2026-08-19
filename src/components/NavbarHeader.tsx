@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserProgress, Settings } from '../types';
-import { Volume2, VolumeX, Tv, Users, Compass, Sparkles, Settings as SettingsIcon, X, Sliders, ShieldCheck, BookOpen, Save } from 'lucide-react';
+import { Volume2, VolumeX, Tv, Users, Compass, Sparkles, Settings as SettingsIcon, X, Sliders, ShieldCheck, BookOpen, Save, Palette, GraduationCap } from 'lucide-react';
+import { PixelCustomAvatarSprite } from './pixel/PixelArtSprites';
 import { playSound } from '../utils/audio';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
   onResetData: () => void;
   onOpenMajorsModal?: () => void;
   onOpenSaveLoadModal?: () => void;
+  onOpenAvatarStudio?: () => void;
 }
 
 export const NavbarHeader: React.FC<Props> = ({
@@ -23,6 +25,7 @@ export const NavbarHeader: React.FC<Props> = ({
   onResetData,
   onOpenMajorsModal,
   onOpenSaveLoadModal,
+  onOpenAvatarStudio,
 }) => {
 
   const [timeStr, setTimeStr] = useState<string>('09:41:00');
@@ -72,40 +75,95 @@ export const NavbarHeader: React.FC<Props> = ({
           </div>
         </div>
 
-        {/* Center: Navigation Gates */}
-        <nav className="flex items-center gap-2">
+        {/* Center: Navigation Stages */}
+        <nav className="flex items-center gap-1.5 overflow-x-auto py-1">
+          <button
+            onClick={() => { playSound.click(settings.retroSound); onNavigateGate('welcome'); }}
+            className={`px-2.5 py-1 font-bold text-[11px] uppercase transition-all flex items-center gap-1 border-2 shrink-0 ${
+              progress.currentGate === 'welcome'
+                ? 'bg-[#00ff41] text-[#0c0c0c] border-[#00ff41]'
+                : 'border-[#00ff41]/60 text-[#00ff41] hover:bg-[#00ff41] hover:text-[#0c0c0c]'
+            }`}
+            title="Màn Mở Đầu: Cốt Truyện & Khởi Tạo Hồ Sơ"
+          >
+            <span>MỞ ĐẦU</span>
+          </button>
+
           <button
             onClick={() => { playSound.click(settings.retroSound); onNavigateGate('quiz_gate'); }}
-            className={`px-3 py-1 font-bold text-xs uppercase transition-all flex items-center gap-1.5 border-2 ${
+            className={`px-2.5 py-1 font-bold text-[11px] uppercase transition-all flex items-center gap-1 border-2 shrink-0 ${
               progress.currentGate === 'quiz_gate'
                 ? 'bg-[#00ff41] text-[#0c0c0c] border-[#00ff41]'
-                : 'border-[#00ff41] text-[#00ff41] hover:bg-[#00ff41] hover:text-[#0c0c0c]'
+                : 'border-[#00ff41]/60 text-[#00ff41] hover:bg-[#00ff41] hover:text-[#0c0c0c]'
             }`}
+            title="Màn 1: Cổng A - Trắc Nghiệm Holland RIASEC"
           >
             <Compass className="w-3.5 h-3.5" />
-            <span>CỔNG A: TRẮC NGHIỆM</span>
+            <span>MÀN 1: TRẮC NGHIỆM</span>
           </button>
 
           <button
             onClick={() => { playSound.click(settings.retroSound); onNavigateGate('city_map'); }}
-            className={`px-3 py-1 font-bold text-xs uppercase transition-all flex items-center gap-1.5 border-2 ${
-              progress.currentGate === 'city_map' || progress.currentGate === 'internship'
+            className={`px-2.5 py-1 font-bold text-[11px] uppercase transition-all flex items-center gap-1 border-2 shrink-0 ${
+              progress.currentGate === 'city_map'
                 ? 'bg-[#00ff41] text-[#0c0c0c] border-[#00ff41]'
-                : 'border-[#00ff41] text-[#00ff41] hover:bg-[#00ff41] hover:text-[#0c0c0c]'
+                : 'border-[#00ff41]/60 text-[#00ff41] hover:bg-[#00ff41] hover:text-[#0c0c0c]'
             }`}
+            title="Màn 1: Cổng B - Bản Đồ Đô Thị 23 Tòa Cao Ốc"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>CỔNG B: BẢN ĐỒ 5 NGÀNH</span>
+            <span>BẢN ĐỒ ĐÔ THỊ</span>
+          </button>
+
+          <button
+            onClick={() => { playSound.click(settings.retroSound); onNavigateGate('internship'); }}
+            className={`px-2.5 py-1 font-bold text-[11px] uppercase transition-all flex items-center gap-1 border-2 shrink-0 ${
+              progress.currentGate === 'internship'
+                ? 'bg-[#00ff41] text-[#0c0c0c] border-[#00ff41]'
+                : 'border-[#00ff41]/60 text-[#00ff41] hover:bg-[#00ff41] hover:text-[#0c0c0c]'
+            }`}
+            title="Màn 2: 8 Tuần Thực Tập Chuyên Sâu"
+          >
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>MÀN 2: THỰC TẬP</span>
+          </button>
+
+          <button
+            onClick={() => { playSound.click(settings.retroSound); onNavigateGate('certificate'); }}
+            className={`px-2.5 py-1 font-bold text-[11px] uppercase transition-all flex items-center gap-1 border-2 shrink-0 ${
+              progress.currentGate === 'certificate'
+                ? 'bg-[#ff00ff] text-[#0c0c0c] border-[#ff00ff] shadow-[0_0_10px_rgba(255,0,255,0.4)]'
+                : 'border-[#ff00ff]/60 text-[#ff00ff] hover:bg-[#ff00ff] hover:text-[#0c0c0c]'
+            }`}
+            title="Màn Kết Thúc: Đại Lễ Tốt Nghiệp & Chứng Nhận"
+          >
+            <GraduationCap className="w-3.5 h-3.5" />
+            <span>KẾT THÚC</span>
           </button>
         </nav>
 
         {/* Right: Telemetry & Actions */}
         <div className="flex items-center gap-2 text-xs uppercase">
-          {/* User Code Tag */}
-          <div className="hidden lg:flex items-center gap-2 border border-[#00ff41] px-2 py-1 text-[11px] bg-[#111]">
-            <span>{progress.name || 'PLAYER_01'}</span>
-            <span className="text-[#ff00ff] font-bold">[{progress.hollandCode}]</span>
-          </div>
+          {/* User Custom Avatar Interactive Tag */}
+          {onOpenAvatarStudio && (
+            <button
+              onClick={() => { playSound.click(settings.retroSound); onOpenAvatarStudio(); }}
+              className="flex items-center gap-1.5 border-2 border-[#00ff41] bg-[#0c140c] hover:bg-[#00ff41] hover:text-[#000] px-2 py-0.5 text-[11px] transition-all shadow-[0_0_10px_rgba(0,255,65,0.3)] group"
+              title="Tùy biến nhân vật pixel (Avatar Studio)"
+            >
+              {progress.customAvatar ? (
+                <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                  <PixelCustomAvatarSprite config={progress.customAvatar} size={22} animate={false} showCompanion={false} />
+                </div>
+              ) : (
+                <Palette className="w-3.5 h-3.5 text-[#ff00ff] group-hover:text-black" />
+              )}
+              <span className="font-bold">{progress.name || 'PLAYER'}</span>
+              <span className="text-[#ff00ff] group-hover:text-black font-bold text-[9px] bg-black/40 px-1 py-0.2 border border-[#00ff41]/40">
+                8-BIT
+              </span>
+            </button>
+          )}
 
           <div className="hidden xl:block text-[11px] opacity-70">
             {timeStr}

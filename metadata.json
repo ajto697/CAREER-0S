@@ -1,6 +1,6 @@
 {
   "name": "CareerOS V5.0 - Game Thực Tập Hướng Nghiệp",
-  "description": "Hệ điều hành hướng nghiệp mô phỏng 8 tuần thực tập trong 5 ngành nghề theo GDPT 2018 với 60 câu trắc nghiệm Holland RIASEC và nhiệm vụ thao tác thật.",
+  "description": "Hệ điều hành hướng nghiệp mô phỏng thực tập 8 tuần theo GDPT 2018 với hệ thống NPC Mentor & Đồng Nghiệp độc quyền cho tất cả ngành nghề, 60 câu trắc nghiệm Holland RIASEC, bản đồ đô thị 23 tòa cao ốc 4 phân khu, Cây Kỹ Năng & Dụng Cụ Chuyên Dụng (Skill Tree) và Avatar Pixel Art Việt Nam.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

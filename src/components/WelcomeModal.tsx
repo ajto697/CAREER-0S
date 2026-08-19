@@ -3,13 +3,15 @@ import { UserProgress, Settings } from '../types';
 import { playSound } from '../utils/audio';
 import { IntroSequence } from './IntroSequence';
 import { GameIntroCutscene } from './GameIntroCutscene';
-import { Compass, Sparkles, ArrowRight, BookOpen, Play, ChevronLeft, ChevronRight, Terminal, Award, ShieldCheck, Zap, Laptop, HeartPulse, Newspaper, FlaskConical, GraduationCap } from 'lucide-react';
+import { Compass, Sparkles, ArrowRight, BookOpen, Play, ChevronLeft, ChevronRight, Terminal, Award, ShieldCheck, Zap, Laptop, HeartPulse, Newspaper, FlaskConical, GraduationCap, Palette } from 'lucide-react';
+import { PixelShibaSprite, PixelCustomAvatarSprite } from './pixel/PixelArtSprites';
 
 interface Props {
   progress: UserProgress;
   settings: Settings;
   onStartQuizGate: (info: { name: string; school: string; className: string }) => void;
   onStartCityMapGate: (info: { name: string; school: string; className: string }) => void;
+  onOpenAvatarStudio?: () => void;
 }
 
 type Mode = 'start_screen' | 'intro_story' | 'profile_setup';
@@ -18,7 +20,8 @@ export const WelcomeModal: React.FC<Props> = ({
   progress,
   settings,
   onStartQuizGate,
-  onStartCityMapGate
+  onStartCityMapGate,
+  onOpenAvatarStudio
 }) => {
   const [mode, setMode] = useState<Mode>('start_screen');
   const [storyStep, setStoryStep] = useState<number>(0);
@@ -66,18 +69,22 @@ export const WelcomeModal: React.FC<Props> = ({
   ];
 
   return (
-    <div className="max-w-4xl mx-auto my-6 bg-[#0c0c0c] border-4 border-[#00ff41] p-5 sm:p-8 shadow-2xl space-y-6 font-mono text-[#00ff41] relative select-none">
+    <div className="max-w-4xl mx-auto my-6 bg-[#0c0c0c] border-4 border-[#00ff41] p-5 sm:p-8 shadow-[0_0_40px_rgba(0,255,65,0.3)] space-y-6 font-mono text-[#00ff41] relative select-none pixelated">
       
       {/* MODE 1: MAIN START SCREEN */}
       {mode === 'start_screen' && (
         <div className="space-y-6 text-center">
           {/* Top Arcade ASCII Header Banner */}
-          <div className="border-2 border-[#00ff41] p-4 bg-[#111] space-y-2">
-            <div className="inline-block bg-[#00ff41] text-[#0c0c0c] font-bold text-xs px-3 py-0.5 uppercase tracking-widest">
-              SYSTEM_BOOT // CAREER-OS V5.0 GDPT 2018
+          <div className="border-2 border-[#00ff41] p-4 bg-[#111] space-y-3 relative overflow-hidden">
+            <div className="flex items-center justify-center gap-3">
+              <PixelShibaSprite size={36} mood="triumph" accessory="grad_cap" />
+              <div className="inline-block bg-[#00ff41] text-[#0c0c0c] font-pixel font-bold text-xs px-3 py-1 uppercase tracking-widest">
+                ARCADE BOOT // CAREER-OS V5.0
+              </div>
+              <PixelShibaSprite size={36} mood="happy" accessory="cyber_visor" />
             </div>
 
-            <pre className="text-[9px] sm:text-[11px] leading-tight text-[#00ff41] font-bold overflow-x-auto py-2 font-mono">
+            <pre className="text-[8px] sm:text-[10px] leading-tight text-[#00ff41] font-bold overflow-x-auto py-2 font-mono">
 {`██████╗ █████╗ ██████╗ ███████╗███████╗██╗  ██╗   ██████╗ ███████╗
 ██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝██║  ██║  ██╔═══██╗██╔════╝
 ██║     ███████║██████╔╝█████╗  █████╗  ███████║  ██║   ██║███████╗
@@ -85,10 +92,10 @@ export const WelcomeModal: React.FC<Props> = ({
 ╚██████╗██║  ██║██║  ██║███████╗███████╗██║  ██║  ╚██████╔╝███████║`}
             </pre>
 
-            <h1 className="text-lg sm:text-2xl font-extrabold uppercase tracking-wider text-[#00ff41]">
-              HỆ ĐIỀU HÀNH MÔ PHỎNG 8 TUẦN THỰC TẬP HƯỚNG NGHIỆP
+            <h1 className="text-sm sm:text-xl font-pixel font-bold uppercase tracking-wider text-[#00ff41]">
+              HỆ ĐIỀU HÀNH 8-BIT THỰC TẬP HƯỚNG NGHIỆP
             </h1>
-            <p className="text-xs text-[#00ff41] opacity-80 max-w-xl mx-auto">
+            <p className="text-xs text-white/90 max-w-xl mx-auto font-mono">
               "Năng lực từ việc làm thật, không phải từ chọn A/B/C" — Trải nghiệm thực tập sinh 5 ngành nghề trên công cụ nghiệp vụ thực tế!
             </p>
           </div>
@@ -182,42 +189,90 @@ export const WelcomeModal: React.FC<Props> = ({
             </button>
           </div>
 
-          {/* Profile Input Form */}
-          <div className="bg-[#111] p-5 border-2 border-[#00ff41] space-y-3 text-xs">
-            <div className="text-[#00ff41] font-bold uppercase text-[11px] flex items-center gap-1.5 border-b border-[#00ff41]/30 pb-2">
-              <BookOpen className="w-4 h-4 text-[#00ff41]" />
-              <span>[ THÔNG TIN HỌC SINH THI ĐUA ]</span>
+          {/* Profile Input Form with Custom Avatar Preview */}
+          <div className="bg-[#111] p-5 border-2 border-[#00ff41] space-y-4 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#00ff41]/30 pb-2">
+              <div className="text-[#00ff41] font-bold uppercase text-[11px] flex items-center gap-1.5">
+                <BookOpen className="w-4 h-4 text-[#00ff41]" />
+                <span>[ THÔNG TIN HỌC SINH & NHÂN VẬT PIXEL ]</span>
+              </div>
+              {onOpenAvatarStudio && (
+                <button
+                  onClick={() => { playSound.click(settings.retroSound); onOpenAvatarStudio(); }}
+                  className="px-3 py-1 bg-[#ff00ff] text-black hover:bg-[#ff44ff] font-pixel font-bold text-[10px] uppercase flex items-center gap-1.5 shadow-[0_0_10px_rgba(255,0,255,0.4)] transition-all"
+                >
+                  <Palette className="w-3.5 h-3.5" />
+                  <span>🎨 TÙY CHỈNH NHÂN VẬT PIXEL</span>
+                </button>
+              )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-              <div>
-                <label className="text-[10px] text-[#00ff41] opacity-70 block mb-1">HỌ VÀ TÊN</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-[#000] text-[#00ff41] border border-[#00ff41] px-3 py-2 text-xs focus:bg-[#111] focus:outline-none font-mono"
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+              {/* Avatar Preview Box */}
+              <div className="sm:col-span-4 bg-[#080d09] border border-[#00ff41]/50 p-3 flex flex-col items-center justify-center space-y-2 rounded">
+                <PixelCustomAvatarSprite
+                  config={progress.customAvatar || {
+                    gender: 'male',
+                    skinTone: 'warm',
+                    hairStyle: 'spiky',
+                    hairColor: 'black',
+                    outfit: 'cyber_hoodie',
+                    outfitColor: 'green',
+                    accessory: 'cyber_visor',
+                    headgear: 'none',
+                    heldItem: 'laptop',
+                    companion: 'shiba',
+                    title: 'Thực Tập Sinh',
+                    expression: 'smile'
+                  }}
+                  size={68}
+                  animate={true}
+                  showCompanion={true}
+                  showTitle={true}
                 />
+                {onOpenAvatarStudio && (
+                  <button
+                    onClick={() => { playSound.click(settings.retroSound); onOpenAvatarStudio(); }}
+                    className="text-[9px] text-[#00ff41] underline hover:text-[#ff00ff] font-bold uppercase"
+                  >
+                    [ SỬA NGOẠI HÌNH & THÚ CƯNG ]
+                  </button>
+                )}
               </div>
 
-              <div>
-                <label className="text-[10px] text-[#00ff41] opacity-70 block mb-1">TRƯỜNG THPT</label>
-                <input
-                  type="text"
-                  value={school}
-                  onChange={(e) => setSchool(e.target.value)}
-                  className="w-full bg-[#000] text-[#00ff41] border border-[#00ff41] px-3 py-2 text-xs focus:bg-[#111] focus:outline-none font-mono"
-                />
-              </div>
+              {/* Form Fields */}
+              <div className="sm:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="sm:col-span-3 sm:grid sm:grid-cols-3 sm:gap-3 space-y-3 sm:space-y-0">
+                  <div>
+                    <label className="text-[10px] text-[#00ff41] opacity-70 block mb-1 font-bold">HỌ VÀ TÊN</label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full bg-[#000] text-[#00ff41] border border-[#00ff41] px-3 py-2 text-xs focus:bg-[#111] focus:outline-none font-mono font-bold"
+                    />
+                  </div>
 
-              <div>
-                <label className="text-[10px] text-[#00ff41] opacity-70 block mb-1">LỚP HỌC</label>
-                <input
-                  type="text"
-                  value={className}
-                  onChange={(e) => setClassName(e.target.value)}
-                  className="w-full bg-[#000] text-[#00ff41] border border-[#00ff41] px-3 py-2 text-xs focus:bg-[#111] focus:outline-none font-mono"
-                />
+                  <div>
+                    <label className="text-[10px] text-[#00ff41] opacity-70 block mb-1 font-bold">TRƯỜNG THPT</label>
+                    <input
+                      type="text"
+                      value={school}
+                      onChange={(e) => setSchool(e.target.value)}
+                      className="w-full bg-[#000] text-[#00ff41] border border-[#00ff41] px-3 py-2 text-xs focus:bg-[#111] focus:outline-none font-mono font-bold"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] text-[#00ff41] opacity-70 block mb-1 font-bold">LỚP HỌC</label>
+                    <input
+                      type="text"
+                      value={className}
+                      onChange={(e) => setClassName(e.target.value)}
+                      className="w-full bg-[#000] text-[#00ff41] border border-[#00ff41] px-3 py-2 text-xs focus:bg-[#111] focus:outline-none font-mono font-bold"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

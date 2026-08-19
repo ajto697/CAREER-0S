@@ -19,6 +19,8 @@ import { TeacherDashboardModal } from './components/TeacherDashboardModal';
 import { VietnamMajorsModal } from './components/VietnamMajorsModal';
 import { SaveLoadModal } from './components/SaveLoadModal';
 import { DogMascotGuide } from './components/DogMascotGuide';
+import { PixelAvatarStudioModal } from './components/PixelAvatarStudioModal';
+import { PixelAvatarConfig } from './types';
 
 export default function App() {
   const [progress, setProgress] = useState<UserProgress>(loadUserProgress);
@@ -27,12 +29,20 @@ export default function App() {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
   const [isMajorsModalOpen, setIsMajorsModalOpen] = useState(false);
   const [isSaveLoadOpen, setIsSaveLoadOpen] = useState(false);
-
+  const [isAvatarStudioOpen, setIsAvatarStudioOpen] = useState(false);
 
   // Sync progress changes to localStorage
   const handleUpdateProgress = (updated: UserProgress) => {
     setProgress(updated);
     saveUserProgress(updated);
+  };
+
+  const handleUpdateAvatar = (newAvatar: PixelAvatarConfig) => {
+    const updated: UserProgress = {
+      ...progress,
+      customAvatar: newAvatar
+    };
+    handleUpdateProgress(updated);
   };
 
   // Sync settings changes to localStorage
@@ -99,6 +109,7 @@ export default function App() {
         onOpenDashboard={() => setIsDashboardOpen(true)}
         onOpenMajorsModal={() => setIsMajorsModalOpen(true)}
         onOpenSaveLoadModal={() => setIsSaveLoadOpen(true)}
+        onOpenAvatarStudio={() => setIsAvatarStudioOpen(true)}
         onResetData={handleResetData}
       />
 
@@ -116,6 +127,7 @@ export default function App() {
               settings={settings}
               onStartQuizGate={handleStartQuizGate}
               onStartCityMapGate={handleStartCityMapGate}
+              onOpenAvatarStudio={() => setIsAvatarStudioOpen(true)}
             />
           )
         )}
@@ -153,6 +165,10 @@ export default function App() {
             progress={progress}
             settings={settings}
             onBackToMap={() => handleUpdateProgress({ ...progress, currentGate: 'city_map' })}
+            onRestartGame={() => {
+              setShowIntro(true);
+              handleUpdateProgress({ ...progress, currentGate: 'welcome' });
+            }}
           />
         )}
       </main>
@@ -197,7 +213,17 @@ export default function App() {
         onOpenSaveLoadModal={() => setIsSaveLoadOpen(true)}
         onOpenDashboard={() => setIsDashboardOpen(true)}
         onOpenMajorsModal={() => setIsMajorsModalOpen(true)}
+        onOpenAvatarStudio={() => setIsAvatarStudioOpen(true)}
         onNavigateGate={(gate) => handleUpdateProgress({ ...progress, currentGate: gate })}
+      />
+
+      {/* 8-Bit Pixel Custom Avatar Studio Modal */}
+      <PixelAvatarStudioModal
+        progress={progress}
+        settings={settings}
+        isOpen={isAvatarStudioOpen}
+        onClose={() => setIsAvatarStudioOpen(false)}
+        onSaveAvatar={handleUpdateAvatar}
       />
     </div>
   );
