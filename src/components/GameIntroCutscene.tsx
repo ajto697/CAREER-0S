@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Settings } from '../types';
 import { playSound } from '../utils/audio';
-import { Sparkles, Terminal, Play, Pause, ChevronRight, ChevronLeft, ArrowRight, ShieldCheck, Zap, Award, GraduationCap, Volume2, VolumeX, Flame } from 'lucide-react';
+import { Sparkles, Terminal, Play, Pause, ChevronRight, ChevronLeft, ArrowRight, ShieldCheck, Zap, Award, GraduationCap, Volume2, VolumeX, Flame, Globe } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { PixelVietnamEarthScene } from './pixel/PixelVietnamEarthScene';
 
 interface Props {
   settings: Settings;
@@ -152,6 +153,13 @@ export const GameIntroCutscene: React.FC<Props> = ({
               </h1>
             </div>
           </div>
+
+          {/* Pixel Vietnam / Earth Animated Scene in Chapters 0 and 1 */}
+          {(currentChapter === 0 || currentChapter === 1) && (
+            <div className="w-full my-2">
+              <PixelVietnamEarthScene enableSound={!audioMuted} />
+            </div>
+          )}
 
           {/* Typewriter Narration Box */}
           <div className="bg-[#080d08] border-2 border-[#00ff41] p-5 space-y-4 min-h-[160px] relative shadow-inner">
